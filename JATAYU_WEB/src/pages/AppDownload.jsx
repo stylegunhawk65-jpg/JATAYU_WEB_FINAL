@@ -1,41 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Download, Smartphone, Shield, Zap, Activity } from 'lucide-react';
+import { Download, Shield, Zap, Activity } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 
 const AppDownload = () => {
-  const [isAndroid, setIsAndroid] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-
-  useEffect(() => {
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    if (/android/i.test(userAgent)) {
-      setIsAndroid(true);
-    }
-  }, []);
-
-  const handleDownload = (e) => {
-    if (isAndroid) {
-      // Allow default behavior (which would be an a tag href to APK)
-      console.log("Downloading APK for Android");
+  const handleDownload = () => {
+    if (/Android/i.test(navigator.userAgent)) {
+      window.location.href = "https://drive.google.com/uc?export=download&id=1d_qMdXIwHdBMxB1s-grOHChRpuYf7I9j";
     } else {
-      e.preventDefault();
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
+      alert("App is currently available only for Android devices.");
     }
   };
 
   return (
     <PageTransition className="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12 min-h-[calc(100vh-80px)] relative">
       
-      {/* Toast Notification */}
-      <div className={`fixed top-24 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ${showToast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}>
-        <div className="glass-panel px-6 py-3 border-primary-500/50 text-white flex items-center gap-2 glow-box">
-          <Activity className="w-4 h-4 text-primary-500" />
-          <span>The mobile app is currently only available for Android devices.</span>
-        </div>
-      </div>
-
       {/* Left side text content */}
       <div className="flex-1 lg:pr-8">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-500/20 text-primary-500 mb-6 border border-primary-500/30">
@@ -71,16 +50,21 @@ const AppDownload = () => {
           </div>
         </div>
         
-        <a 
-          href="/jeev_pulse.apk" 
-          download="jeev_pulse.apk"
+        <button
+          type="button"
           onClick={handleDownload}
           className="group relative inline-flex items-center gap-3 px-8 py-5 rounded-xl bg-primary-500 text-white font-bold text-xl overflow-hidden transition-all hover:scale-105 glow-box w-full sm:w-auto justify-center"
         >
           <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
           <Download className="w-6 h-6" />
           Download Now
-        </a>
+        </button>
+
+        <div className="mt-4 flex flex-wrap gap-2 text-sm">
+          <span className="px-3 py-1 rounded-full bg-white/10 border border-white/20 text-gray-200">App version: v1.0</span>
+          <span className="px-3 py-1 rounded-full bg-white/10 border border-white/20 text-gray-200">File size: ~117MB</span>
+          <span className="px-3 py-1 rounded-full bg-green-500/15 border border-green-400/30 text-green-300">Android only</span>
+        </div>
       </div>
       
       {/* Right side 3D Phone Mockup (Simulated with CSS) */}

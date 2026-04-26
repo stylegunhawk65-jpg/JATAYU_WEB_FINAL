@@ -7,7 +7,6 @@ import { Brain, Activity, ShieldAlert, Pill, Stethoscope, HeartPulse, Download, 
 
 const Landing = () => {
   const [isAndroid, setIsAndroid] = useState(false);
-  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -16,14 +15,11 @@ const Landing = () => {
     }
   }, []);
 
-  const handleDownload = (e) => {
-    if (isAndroid) {
-      // Allow default behavior (which would be an a tag href to APK)
-      console.log("Downloading APK for Android");
+  const handleDownload = () => {
+    if (/Android/i.test(navigator.userAgent)) {
+      window.location.href = "https://drive.google.com/uc?export=download&id=1d_qMdXIwHdBMxB1s-grOHChRpuYf7I9j";
     } else {
-      e.preventDefault();
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
+      alert("App is currently available only for Android devices.");
     }
   };
 
@@ -38,14 +34,6 @@ const Landing = () => {
 
   return (
     <div className="w-full">
-      {/* Toast Notification */}
-      <div className={`fixed top-24 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ${showToast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}>
-        <div className="glass-panel px-6 py-3 border-primary-500/50 text-white flex items-center gap-2 glow-box">
-          <Activity className="w-4 h-4 text-primary-500" />
-          <span>The mobile app is currently only available for Android devices.</span>
-        </div>
-      </div>
-
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden pt-20">
         <HeroOrb />
@@ -73,15 +61,15 @@ const Landing = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a 
-                href="/jatayu-health.apk" 
+              <button
+                type="button"
                 onClick={handleDownload}
                 className="group relative flex items-center gap-2 px-8 py-4 rounded-full bg-primary-500 text-white font-bold text-lg overflow-hidden transition-all hover:scale-105 glow-box w-full sm:w-auto justify-center"
               >
                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
                 <Download className="w-5 h-5" />
                 Download App
-              </a>
+              </button>
               <Link 
                 to="/login"
                 className="flex items-center gap-2 px-8 py-4 rounded-full glass-panel border border-white/20 text-white font-bold text-lg transition-all hover:bg-white/10 w-full sm:w-auto justify-center"
